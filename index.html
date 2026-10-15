@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nagaraju Chattu</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Nagaraju Chattu — AWS DevOps Engineer. Kubernetes (EKS), Terraform, CI/CD and GitOps.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: blueprint sheet — a narrow reading column with infra-diagram bands, terraform-plan hero, deploy-log timeline */
+:root{
+  --paper:#eef2f6;
+  --sheet:#f8fafc;
+  --ink:#0f2236;
+  --ink-2:#4a5d72;
+  --line:#c9d4e0;
+  --grid:rgba(15,34,54,.055);
+  --accent:#d9771e;      /* signal amber */
+  --accent-ink:#9a4f0c;
+  --ok:#1d8a5a;
+  --minus:#b4433a;
+  --code-bg:#0f2236;
+  --code-fg:#dbe5ef;
+  --code-dim:#7f93a8;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Public Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0b1724; --sheet:#102030; --ink:#e3ebf3; --ink-2:#97aabd; --line:#22384d;
+    --grid:rgba(160,190,220,.06); --accent:#f0953d; --accent-ink:#f6b36f; --ok:#4cc38a; --minus:#ef7b70;
+    --code-bg:#071019; --code-fg:#dbe5ef; --code-dim:#6f849a; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0b1724; --sheet:#102030; --ink:#e3ebf3; --ink-2:#97aabd; --line:#22384d;
+  --grid:rgba(160,190,220,.06); --accent:#f0953d; --accent-ink:#f6b36f; --ok:#4cc38a; --minus:#ef7b70;
+  --code-bg:#071019; --code-fg:#dbe5ef; --code-dim:#6f849a; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0}
+img{max-width:100%}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto} *{animation:none!important;transition:none!important}}
+body{
+  background:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;
+  color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:4px}
+.wrap{max-width:1040px; margin:0 auto; padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px))}
+
+/* nav */
+header.top{position:sticky; top:env(safe-area-inset-top,0px); z-index:10; background:color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex; align-items:center; justify-content:space-between; gap:16px; padding-block:12px}
+.mark{font-family:var(--mono); font-size:13px; font-weight:500; text-decoration:none; letter-spacing:.02em}
+.mark b{color:var(--accent-ink); font-weight:500}
+nav.links{display:flex; gap:20px; font-size:14px}
+nav.links a{text-decoration:none; color:var(--ink-2)}
+nav.links a:hover{color:var(--ink)}
+@media (max-width:640px){nav.links{display:none}}
+
+/* hero */
+.hero{padding-block:64px 40px}
+.hero-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:40px; align-items:start}
+@media (max-width:860px){.hero-grid{grid-template-columns:1fr; gap:28px}}
+.eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-ink); display:flex; align-items:center; gap:10px}
+.eyebrow::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--ok); box-shadow:0 0 0 4px color-mix(in srgb,var(--ok) 22%,transparent)}
+h1{font-family:var(--display); font-weight:800; font-size:clamp(44px,7.4vw,84px); line-height:.95; letter-spacing:-.03em; margin:18px 0 18px; text-wrap:balance}
+h1 span{display:block; color:var(--accent)}
+.role{font-family:var(--display); font-weight:500; font-size:clamp(19px,2.2vw,23px); line-height:1.35; margin:0 0 16px; text-wrap:balance}
+.lede{color:var(--ink-2); max-width:56ch; margin:0 0 26px}
+.cta{display:flex; flex-wrap:wrap; gap:12px}
+.btn{display:inline-flex; align-items:center; gap:8px; font:500 14px/1 var(--body); padding:12px 18px; border-radius:6px; text-decoration:none; border:1px solid var(--ink); cursor:pointer; background:transparent; color:var(--ink)}
+.btn.primary{background:var(--ink); color:var(--sheet)}
+.btn:hover{transform:translateY(-1px)}
+.meta{display:flex; flex-wrap:wrap; gap:8px 18px; margin-top:22px; font-family:var(--mono); font-size:12.5px; color:var(--ink-2)}
+
+/* terraform plan */
+.plan{background:var(--code-bg); color:var(--code-fg); border-radius:10px; font-family:var(--mono); font-size:13px; line-height:1.75; overflow:hidden; box-shadow:0 18px 40px -22px rgba(8,20,32,.55)}
+.plan-bar{display:flex; align-items:center; gap:8px; padding:10px 14px; border-bottom:1px solid rgba(255,255,255,.08); color:var(--code-dim); font-size:12px}
+.plan-bar i{width:9px; height:9px; border-radius:50%; background:#33475b; display:inline-block}
+.plan pre{margin:0; padding:16px 18px 18px; overflow-x:auto; font:inherit}
+.c{color:var(--code-dim)} .p{color:#f0953d} .g{color:#4cc38a} .r{color:#ef7b70} .k{color:#8ab4f8}
+.pipeline{display:grid; grid-template-columns:repeat(5,1fr); gap:4px; padding:0 18px 18px}
+.stage{font-size:10.5px; color:var(--code-dim); text-transform:uppercase; letter-spacing:.06em}
+.stage::before{content:""; display:block; height:4px; border-radius:2px; background:#4cc38a; margin-bottom:6px; transform-origin:left; animation:fill .5s ease-out both}
+.stage:nth-child(2)::before{animation-delay:.25s}.stage:nth-child(3)::before{animation-delay:.5s}.stage:nth-child(4)::before{animation-delay:.75s}.stage:nth-child(5)::before{animation-delay:1s; background:#f0953d}
+@keyframes fill{from{transform:scaleX(.08)}to{transform:scaleX(1)}}
+
+/* sections */
+section{padding-block:56px}
+.sec-head{display:flex; align-items:baseline; gap:14px; margin-bottom:28px; border-top:1px solid var(--line); padding-top:18px}
+.sec-head .tag{font-family:var(--mono); font-size:12px; color:var(--accent-ink); letter-spacing:.06em}
+h2{font-family:var(--display); font-weight:700; font-size:clamp(28px,3.6vw,38px); letter-spacing:-.02em; line-height:1.1; margin:0; text-wrap:balance}
+
+/* metrics */
+.metrics{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:10px; overflow:hidden}
+@media (max-width:760px){.metrics{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:420px){.metrics{grid-template-columns:1fr}}
+.metric{background:var(--sheet); padding:22px 22px 20px}
+.metric .from{font-family:var(--mono); font-size:12px; color:var(--ink-2); font-variant-numeric:tabular-nums}
+.metric .from s{color:var(--minus)}
+.metric .n{font-family:var(--display); font-weight:800; font-size:44px; letter-spacing:-.03em; line-height:1; margin:8px 0 10px; font-variant-numeric:tabular-nums}
+.metric .n small{font-size:.5em; font-weight:700; color:var(--accent)}
+.metric p{margin:0; font-size:14px; color:var(--ink-2)}
+
+/* architecture */
+.arch{background:var(--sheet); border:1px solid var(--line); border-radius:10px; padding:22px}
+.arch-intro{color:var(--ink-2); max-width:62ch; margin:0 0 20px}
+.edge{font-family:var(--mono); font-size:12px; color:var(--ink-2); display:flex; flex-wrap:wrap; align-items:center; gap:8px; padding:0 0 10px}
+.edge b{color:var(--ink); font-weight:500}
+.tier{display:grid; grid-template-columns:150px 1fr; gap:16px; align-items:center; border:1px dashed var(--line); border-radius:8px; padding:14px 16px; position:relative}
+.tier + .flow{height:26px; display:flex; justify-content:center}
+.flow::before{content:""; width:2px; background:repeating-linear-gradient(var(--accent) 0 5px,transparent 5px 9px); background-size:2px 9px; animation:flow 1s linear infinite}
+@keyframes flow{to{background-position:0 9px}}
+.tier h3{margin:0; font-family:var(--display); font-size:17px; font-weight:700}
+.tier h3 small{display:block; font-family:var(--mono); font-weight:400; font-size:11.5px; color:var(--ink-2); letter-spacing:.02em}
+.chips{display:flex; flex-wrap:wrap; gap:6px}
+.chip{font-family:var(--mono); font-size:12px; padding:4px 9px; border-radius:4px; background:var(--paper); border:1px solid var(--line); white-space:nowrap}
+.chip.hot{border-color:var(--accent); color:var(--accent-ink)}
+.azs{display:flex; gap:8px; margin-top:16px; font-family:var(--mono); font-size:11.5px; color:var(--ink-2)}
+.azs span{flex:1; text-align:center; border-top:2px solid var(--line); padding-top:6px}
+@media (max-width:600px){.tier{grid-template-columns:1fr; gap:10px}}
+
+/* experience log */
+.log{display:grid; gap:0}
+.job{display:grid; grid-template-columns:200px 1fr; gap:28px; padding:28px 0; border-bottom:1px solid var(--line)}
+.job:first-child{padding-top:4px}
+@media (max-width:760px){.job{grid-template-columns:1fr; gap:10px}}
+.when{font-family:var(--mono); font-size:12.5px; color:var(--ink-2); font-variant-numeric:tabular-nums}
+.when .sha{display:inline-block; color:var(--accent-ink); margin-bottom:4px}
+.when .badge{display:inline-block; margin-top:8px; padding:2px 8px; border-radius:20px; background:color-mix(in srgb,var(--ok) 16%,transparent); color:var(--ok); font-size:11px}
+.job h3{font-family:var(--display); font-size:24px; font-weight:700; letter-spacing:-.01em; margin:0}
+.job .title{font-weight:600; margin:2px 0 10px}
+.job .proj{color:var(--ink-2); margin:0 0 14px; max-width:68ch}
+.job ul{margin:0 0 16px; padding:0; list-style:none; display:grid; gap:9px; max-width:72ch}
+.job li{position:relative; padding-left:22px}
+.job li::before{content:"+"; position:absolute; left:2px; top:0; font-family:var(--mono); color:var(--ok); font-weight:500}
+.job li strong{font-weight:600}
+.env{display:flex; flex-wrap:wrap; gap:6px}
+.env .chip{font-size:11.5px; background:transparent}
+.job > div{min-width:0}
+
+/* skills */
+.skills{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px}
+.skill{background:var(--sheet); border:1px solid var(--line); border-radius:10px; padding:18px}
+.skill h3{margin:0 0 12px; font-family:var(--mono); font-size:12px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; color:var(--accent-ink)}
+
+/* creds */
+.creds{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+@media (max-width:700px){.creds{grid-template-columns:1fr}}
+.cred{display:flex; gap:16px; align-items:flex-start; background:var(--sheet); border:1px solid var(--line); border-radius:10px; padding:20px}
+.cred .ico{flex:none; width:52px; height:52px; border-radius:10px; display:grid; place-items:center; background:var(--ink); color:var(--sheet); font:700 13px/1 var(--mono)}
+.cred .ico.alt{background:var(--accent); color:#1b0f02}
+.cred h3{margin:0 0 2px; font-family:var(--display); font-size:19px}
+.cred p{margin:0; color:var(--ink-2); font-size:14px}
+
+/* contact */
+.contact{background:var(--ink); color:var(--sheet); border-radius:14px; padding:40px 32px; display:grid; grid-template-columns:1.2fr 1fr; gap:28px; align-items:center}
+@media (max-width:760px){.contact{grid-template-columns:1fr; padding:28px 22px}}
+.contact h2{color:var(--sheet)}
+.contact p{color:color-mix(in srgb,var(--sheet) 72%,transparent); margin:12px 0 0; max-width:48ch}
+.contact .rows{display:grid; gap:10px}
+.crow{display:flex; align-items:center; justify-content:space-between; gap:12px; border:1px solid color-mix(in srgb,var(--sheet) 22%,transparent); border-radius:8px; padding:12px 14px; font-family:var(--mono); font-size:13.5px; min-width:0}
+.crow span{overflow-wrap:anywhere; min-width:0}
+.crow small{display:block; font-size:11px; opacity:.6; letter-spacing:.06em; text-transform:uppercase}
+.copy{flex:none; font:500 12px/1 var(--body); padding:8px 12px; border-radius:5px; border:0; background:var(--accent); color:#1b0f02; cursor:pointer}
+footer{padding-block:28px 40px; font-family:var(--mono); font-size:12px; color:var(--ink-2)}
+footer .wrap{display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="#top">~/<b>nagaraju</b>-chattu</a>
+    <nav class="links" aria-label="Sections">
+      <a href="#impact">Impact</a>
+      <a href="#platform">Platform</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">Available · St. Louis, MO &amp; remote</div>
+        <h1>Nagaraju<span>Chattu</span></h1>
+        <p class="role">AWS DevOps Engineer building three-tier platforms on EKS with Terraform, GitOps and SLOs.</p>
+        <p class="lede">Four years running customer-facing applications on AWS, from Black Friday checkout traffic at Best Buy to release management for banking systems at Citi. I build the infrastructure, ship it through secure pipelines, and stay on the incident call until the root cause is found.</p>
+        <div class="cta">
+          <a class="btn primary" href="#contact">Get in touch</a>
+          <a class="btn" href="#experience">See experience</a>
+        </div>
+        <div class="meta">
+          <span>AWS Certified Solutions Architect – Associate</span>
+          <span>M.S. Information Systems, SLU</span>
+        </div>
+      </div>
+
+      <div class="plan" aria-label="Career highlights written as a Terraform plan">
+        <div class="plan-bar"><i></i><i></i><i></i>&nbsp; terraform plan -out=career.tfplan</div>
+<pre><span class="c"># module.bestbuy_platform will be updated in-place</span>
+<span class="p">~</span> <span class="k">resource</span> "aws_eks_cluster" "checkout" {
+    <span class="p">~</span> deploy_time        = <span class="r">"45m"</span> -> <span class="g">"12m"</span>
+    <span class="p">~</span> new_env_build      = <span class="r">"2w"</span>  -> <span class="g">"&lt;1d"</span>
+    <span class="p">~</span> compute_spend      = <span class="r">"100%"</span> -> <span class="g">"75%"</span>
+    <span class="p">~</span> noisy_pages        = <span class="r">"100%"</span> -> <span class="g">"40%"</span>
+      checkout_slo       = <span class="g">"99.95%"</span>
+      availability_zones = 3
+  }
+
+<span class="g">Plan:</span> 0 to add, 4 to change, 0 to destroy.</pre>
+        <div class="pipeline" aria-hidden="true">
+          <span class="stage">build</span><span class="stage">test</span><span class="stage">scan</span><span class="stage">sync</span><span class="stage">live</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="impact">
+    <div class="wrap">
+      <div class="sec-head"><span class="tag">impact</span><h2>Results I can point to</h2></div>
+      <div class="metrics">
+        <div class="metric"><div class="from"><s>45 min</s> → 12 min</div><div class="n">73<small>%</small></div><p>Faster deployments after consolidating GitHub Actions, Jenkins and Argo CD into one flow.</p></div>
+        <div class="metric"><div class="from"><s>~2 weeks</s> → under 1 day</div><div class="n">&lt;1<small>day</small></div><p>To stand up a full environment from reusable Terraform modules, now used by 4 product teams.</p></div>
+        <div class="metric"><div class="from">Black Friday &amp; holiday peaks</div><div class="n">99.95<small>%</small></div><p>Checkout availability across 30+ storefront, cart and checkout microservices.</p></div>
+        <div class="metric"><div class="from">Spot via Karpenter + right-sizing</div><div class="n">25<small>%</small></div><p>Lower EKS compute spend, tracked monthly in AWS Cost Explorer.</p></div>
+        <div class="metric"><div class="from">SLO-based alerting</div><div class="n">60<small>%</small></div><p>Fewer non-actionable pages, so on-call fires only when orders are at risk.</p></div>
+        <div class="metric"><div class="from">Citi build &amp; release</div><div class="n">20<small>+ apps</small></div><p>Enterprise Java applications released through DEV, SIT, UAT and PROD.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="platform">
+    <div class="wrap">
+      <div class="sec-head"><span class="tag">architecture</span><h2>The platform I run</h2></div>
+      <div class="arch">
+        <p class="arch-intro">Best Buy's e-commerce services (catalog and search, cart, checkout, store pickup, order tracking) on a three-tier AWS design, built in Terraform across three Availability Zones per environment. Security groups chain tier to tier, and IRSA keeps Aurora and Redis reachable only from the app tier.</p>
+        <div class="edge"><b>Customer</b> → Route 53 → AWS WAF → ALB + ACM TLS</div>
+        <div class="tier">
+          <h3>Web tier<small>public edge</small></h3>
+          <div class="chips"><span class="chip">NGINX Ingress</span><span class="chip">React storefront</span><span class="chip">Amazon EKS</span></div>
+        </div>
+        <div class="flow"></div>
+        <div class="tier">
+          <h3>Application tier<small>private subnets</small></h3>
+          <div class="chips"><span class="chip">Spring Boot · catalog</span><span class="chip">cart</span><span class="chip">checkout</span><span class="chip">orders</span><span class="chip hot">HPA</span><span class="chip hot">Karpenter</span></div>
+        </div>
+        <div class="flow"></div>
+        <div class="tier">
+          <h3>Data tier<small>multi-AZ</small></h3>
+          <div class="chips"><span class="chip">Aurora PostgreSQL + read replicas</span><span class="chip">ElastiCache Redis</span><span class="chip">S3 product images</span></div>
+        </div>
+        <div class="azs" aria-label="Spread across three availability zones"><span>az-a</span><span>az-b</span><span>az-c</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <div class="sec-head"><span class="tag">git log --career</span><h2>Experience</h2></div>
+      <div class="log">
+
+        <article class="job">
+          <div class="when"><span class="sha">HEAD → main</span><br>Feb 2025 – Present<br>Remote<br><span class="badge">current</span></div>
+          <div>
+            <h3>Best Buy</h3>
+            <div class="title">AWS DevOps Engineer</div>
+            <p class="proj">Three-tier AWS platform for e-commerce services, built to stay stable through Black Friday and holiday peaks.</p>
+            <ul>
+              <li>Wrote reusable Terraform modules for VPC, EKS, ALB, Aurora and ElastiCache, cutting new environment builds from <strong>about two weeks to under one day</strong>; the standard was adopted by 4 product teams.</li>
+              <li>Rebuilt CI/CD into one GitHub Actions and Jenkins flow with SonarQube, Trivy and Checkov gates and Argo CD GitOps deploys of Helm charts, taking deployments from <strong>45 to 12 minutes</strong>.</li>
+              <li>Kept 30+ microservices at <strong>99.95% checkout availability</strong> through Black Friday by tuning HPA, Karpenter, Aurora read replicas and Redis caching before each sale event.</li>
+              <li>Reduced EKS compute spend by <strong>about 25%</strong> by moving stateless services to Spot and right-sizing pod requests from Grafana usage data.</li>
+              <li>Built per-tier Datadog, Prometheus and Grafana dashboards with SLOs on checkout and order APIs, cutting non-actionable pages by <strong>about 60%</strong>.</li>
+              <li>Escalation point on incident calls for EKS and Aurora issues; write RCAs and onboarded 2 engineers to on-call with runbooks.</li>
+              <li>Use Claude Code, GitHub Copilot and Cursor daily to draft and review Terraform, Helm and pipeline code, with every change going through peer-reviewed pull requests.</li>
+            </ul>
+            <div class="env"><span class="chip">EKS</span><span class="chip">Aurora PostgreSQL</span><span class="chip">ElastiCache</span><span class="chip">Terraform</span><span class="chip">Helm</span><span class="chip">Argo CD</span><span class="chip">Karpenter</span><span class="chip">GitHub Actions</span><span class="chip">Jenkins</span><span class="chip">Datadog</span><span class="chip">Prometheus</span><span class="chip">Grafana</span></div>
+          </div>
+        </article>
+
+        <article class="job">
+          <div class="when"><span class="sha">release/citi</span><br>Nov 2021 – Jan 2024<br>Hybrid</div>
+          <div>
+            <h3>Citi Bank</h3>
+            <div class="title">DevOps Engineer (Build and Release)</div>
+            <p class="proj">Build, release and VM-to-Kubernetes migration for three-tier enterprise Java banking applications (Apache, Spring Boot on Tomcat, Oracle).</p>
+            <ul>
+              <li>Owned build and release for <strong>20+ enterprise Java applications</strong>, packaging web content, builds and Oracle scripts as one versioned UrbanCode Deploy release through DEV, SIT, UAT and PROD.</li>
+              <li>Raised every production change in ServiceNow with implementation, back-out and database rollback plans, and supported weekend release windows using Splunk.</li>
+              <li>Built Jenkins pipelines on Groovy shared libraries and took the nightly build from failing most weeks to <strong>consistently green</strong>.</li>
+              <li>Migrated <strong>8 application-tier services</strong> from VMs to Kubernetes, writing the Dockerfiles and manifests and owning their scaling and restarts.</li>
+            </ul>
+            <div class="env"><span class="chip">Jenkins</span><span class="chip">UrbanCode Deploy</span><span class="chip">ServiceNow</span><span class="chip">Splunk</span><span class="chip">Kubernetes</span><span class="chip">Docker</span><span class="chip">Oracle</span><span class="chip">Groovy</span><span class="chip">RHEL</span></div>
+          </div>
+        </article>
+
+        <article class="job">
+          <div class="when"><span class="sha">init</span><br>Sep 2020 – Oct 2021</div>
+          <div>
+            <h3>Netmetric Solutions</h3>
+            <div class="title">Cloud and DevOps Engineer</div>
+            <ul>
+              <li>Built three-tier AWS environments for <strong>5+ client applications</strong> with CloudFormation: Nginx behind ELB, Tomcat on Auto Scaling groups, MySQL on RDS.</li>
+              <li>Wrote Ansible playbooks for Nginx, Apache and Tomcat, cutting new server setup from <strong>most of a day to under an hour</strong>.</li>
+              <li>Set up Jenkins and Nexus end to end, and deployed ELK, Prometheus and Grafana for logging and monitoring.</li>
+              <li>Configured CloudWatch alarms, Auto Scaling policies, RDS Multi-AZ failover and automated backups.</li>
+              <li>Managed RHEL and Ubuntu servers: patching, SSH and user access, security groups, and Bash automation.</li>
+            </ul>
+            <div class="env"><span class="chip">CloudFormation</span><span class="chip">Ansible</span><span class="chip">RDS MySQL</span><span class="chip">ELK</span><span class="chip">Nexus</span><span class="chip">Bash</span></div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <div class="sec-head"><span class="tag">stack</span><h2>Skills</h2></div>
+      <div class="skills">
+        <div class="skill"><h3>Cloud · AWS</h3><div class="chips"><span class="chip">EKS</span><span class="chip">EC2</span><span class="chip">VPC</span><span class="chip">S3</span><span class="chip">IAM</span><span class="chip">ECR</span><span class="chip">ALB</span><span class="chip">Route 53</span><span class="chip">WAF</span><span class="chip">ACM</span><span class="chip">Lambda</span><span class="chip">RDS</span><span class="chip">Aurora</span><span class="chip">ElastiCache</span><span class="chip">Secrets Manager</span><span class="chip">Cost Explorer</span></div></div>
+        <div class="skill"><h3>CI/CD &amp; DevSecOps</h3><div class="chips"><span class="chip">GitHub Actions</span><span class="chip">Jenkins</span><span class="chip">Argo CD</span><span class="chip">UrbanCode Deploy</span><span class="chip">SonarQube</span><span class="chip">Trivy</span><span class="chip">Checkov</span><span class="chip">ServiceNow</span></div></div>
+        <div class="skill"><h3>Containers</h3><div class="chips"><span class="chip">Docker</span><span class="chip">Kubernetes</span><span class="chip">Helm</span><span class="chip">NGINX Ingress</span><span class="chip">RBAC</span><span class="chip">IRSA</span><span class="chip">HPA</span><span class="chip">Karpenter</span></div></div>
+        <div class="skill"><h3>Infrastructure as Code</h3><div class="chips"><span class="chip">Terraform</span><span class="chip">Modules &amp; remote state</span><span class="chip">CloudFormation</span><span class="chip">Ansible</span></div></div>
+        <div class="skill"><h3>Observability &amp; Reliability</h3><div class="chips"><span class="chip">Datadog</span><span class="chip">Prometheus</span><span class="chip">Grafana</span><span class="chip">CloudWatch</span><span class="chip">Splunk</span><span class="chip">ELK</span><span class="chip">SLOs</span><span class="chip">RCA</span><span class="chip">Backup &amp; DR</span></div></div>
+        <div class="skill"><h3>Data · Scripting · AI</h3><div class="chips"><span class="chip">Aurora PostgreSQL</span><span class="chip">MySQL</span><span class="chip">Oracle</span><span class="chip">Redis</span><span class="chip">Python</span><span class="chip">Bash</span><span class="chip">Groovy</span><span class="chip">Claude Code</span><span class="chip">Copilot</span><span class="chip">Cursor</span><span class="chip">Bedrock</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="credentials">
+    <div class="wrap">
+      <div class="sec-head"><span class="tag">credentials</span><h2>Certification &amp; education</h2></div>
+      <div class="creds">
+        <div class="cred"><div class="ico alt">AWS</div><div><h3>Solutions Architect – Associate</h3><p>SAA-C03 · Amazon Web Services</p></div></div>
+        <div class="cred"><div class="ico">M.S.</div><div><h3>Saint Louis University</h3><p>Master of Science, Information Systems · Jan 2024 – Dec 2025</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="contact">
+        <div>
+          <h2>Let's build something reliable.</h2>
+          <p>Open to AWS DevOps, platform and SRE roles, remote or in St. Louis. Email is the fastest way to reach me.</p>
+        </div>
+        <div class="rows">
+          <div class="crow"><span><small>Email</small>nagarajuchattu12@gmail.com</span><button class="copy" id="copy-email" data-copy="nagarajuchattu12@gmail.com">Copy</button></div>
+          <div class="crow"><span><small>Location</small>St. Louis, Missouri</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><span>© 2026 Nagaraju Chattu</span><span>exit 0</span></div>
+</footer>
+
+<script>
+document.querySelectorAll('.copy').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var text = btn.getAttribute('data-copy');
+    var done = function(){ btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1600); };
+    var fallback = function(){
+      var span = btn.previousElementSibling, r = document.createRange();
+      r.selectNodeContents(span); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      btn.textContent = 'Press Ctrl+C';
+    };
+    try { navigator.clipboard.writeText(text).then(done, fallback); } catch(e){ fallback(); }
+  });
+});
+</script>
+</body>
+</html>
