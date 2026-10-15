@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nagaraju Chattu</title>
+<meta name="description" content="Nagaraju Chattu — AWS DevOps Engineer. Kubernetes (EKS), Terraform, CI/CD and GitOps. St. Louis, Missouri.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: light paper page, deep-green feature blocks with lime highlights; numbered modules, case-study cards, timeline */
+:root{
+  --paper:#f6f7f3;
+  --surface:#ffffff;
+  --ink:#10251f;
+  --muted:#5f6b66;
+  --line:#dce2dd;
+  --green:#123e34;
+  --green-2:#1b5446;
+  --sage:#46705f;
+  --lime:#c8f07c;
+  --on-green:#ffffff;
+  --on-green-muted:rgba(255,255,255,.72);
+  --display:"Manrope", "Segoe UI", system-ui, sans-serif;
+  --body:"DM Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0c1714; --surface:#11201c; --ink:#e7efe9; --muted:#9db0a8; --line:#203631;
+    --green:#16463b; --green-2:#1f5a4b; --sage:#8fc0a8; --lime:#c8f07c; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0c1714; --surface:#11201c; --ink:#e7efe9; --muted:#9db0a8; --line:#203631;
+  --green:#16463b; --green-2:#1f5a4b; --sage:#8fc0a8; --lime:#c8f07c; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0}
+img{max-width:100%}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto} *{animation:none!important; transition:none!important}}
+body{background:var(--paper); color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--sage); outline-offset:3px; border-radius:6px}
+.wrap{max-width:1160px; margin:0 auto; padding-left:max(20px, env(safe-area-inset-left,0px)); padding-right:max(20px, env(safe-area-inset-right,0px))}
+.skip{position:absolute; left:-999px; top:8px; background:var(--green); color:var(--on-green); padding:8px 12px; border-radius:6px; z-index:50}
+.skip:focus{left:12px}
+
+/* nav */
+header.top{position:sticky; top:env(safe-area-inset-top,0px); z-index:20; background:color-mix(in srgb,var(--paper) 90%,transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex; align-items:center; justify-content:space-between; gap:20px; padding-block:14px}
+.brand{display:flex; align-items:center; gap:10px; text-decoration:none; font-family:var(--display); font-weight:800; font-size:15px}
+.mono{width:38px; height:38px; border-radius:10px; background:var(--green); color:var(--lime); display:grid; place-items:center; font-family:var(--display); font-weight:800; font-size:14px; letter-spacing:.02em}
+nav.links{display:flex; gap:26px; font-size:14.5px; font-weight:500}
+nav.links a{text-decoration:none; color:var(--muted)}
+nav.links a:hover{color:var(--ink)}
+.btn{display:inline-flex; align-items:center; gap:8px; font:600 14.5px/1 var(--body); padding:14px 20px; border-radius:999px; text-decoration:none; border:1.5px solid var(--green); cursor:pointer; background:transparent; color:var(--ink); transition:transform .15s, background .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.solid{background:var(--green); color:var(--on-green)}
+.btn.lime{background:var(--lime); border-color:var(--lime); color:#10251f}
+.btn.ghost-light{border-color:rgba(255,255,255,.4); color:var(--on-green)}
+.btn.sm{padding:10px 16px; font-size:13.5px}
+@media (max-width:860px){nav.links{display:none}}
+
+/* hero */
+.hero{padding-block:72px 56px}
+.hero-grid{display:grid; grid-template-columns:1.25fr .9fr; gap:56px; align-items:center}
+@media (max-width:960px){.hero-grid{grid-template-columns:1fr; gap:36px}}
+.avail{display:inline-flex; align-items:center; gap:10px; font-size:14px; font-weight:500; color:var(--muted); background:var(--surface); border:1px solid var(--line); padding:8px 14px; border-radius:999px}
+.avail i{width:8px; height:8px; border-radius:50%; background:#3fb36f; box-shadow:0 0 0 4px rgba(63,179,111,.18); animation:pulse 2.4s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 8px rgba(63,179,111,0)}}
+h1{font-family:var(--display); font-weight:800; font-size:clamp(46px,7vw,82px); line-height:1; letter-spacing:-.035em; margin:22px 0 22px; text-wrap:balance}
+h1 em{font-style:normal; color:var(--sage); display:block}
+.intro{font-size:18px; color:var(--muted); max-width:56ch; margin:0 0 30px}
+.intro b{color:var(--ink); font-weight:600}
+.cta{display:flex; flex-wrap:wrap; gap:12px}
+.stats{display:grid; grid-template-columns:repeat(3,auto); justify-content:start; gap:40px; margin-top:42px; padding-top:26px; border-top:1px solid var(--line)}
+@media (max-width:520px){.stats{grid-template-columns:repeat(3,1fr); gap:16px}}
+.stat b{display:block; font-family:var(--display); font-weight:800; font-size:clamp(30px,4vw,40px); letter-spacing:-.03em; line-height:1; font-variant-numeric:tabular-nums}
+.stat span{font-size:13.5px; color:var(--muted)}
+
+.focus{background:var(--green); color:var(--on-green); border-radius:24px; padding:28px; position:relative; overflow:hidden}
+.focus::after{content:""; position:absolute; right:-80px; top:-80px; width:240px; height:240px; border-radius:50%; background:radial-gradient(circle, rgba(200,240,124,.28), transparent 70%)}
+.focus-top{display:flex; align-items:center; gap:16px; margin-bottom:22px; position:relative; z-index:1}
+.avatar{width:72px; height:72px; border-radius:18px; background:var(--lime); color:#10251f; display:grid; place-items:center; font-family:var(--display); font-weight:800; font-size:26px; flex:none}
+.focus-top h2{font-family:var(--display); font-size:21px; margin:0; line-height:1.2}
+.focus-top p{margin:2px 0 0; color:var(--on-green-muted); font-size:14px}
+.label{font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--lime)}
+.focus ul{list-style:none; margin:12px 0 22px; padding:0; display:grid; gap:10px; position:relative; z-index:1}
+.focus li{display:flex; gap:10px; align-items:flex-start; font-size:15px}
+.focus li::before{content:"→"; color:var(--lime); font-weight:700}
+.term{background:rgba(0,0,0,.25); border-radius:14px; padding:14px 16px; font-family:var(--mono); font-size:12.5px; line-height:1.8; overflow-x:auto; position:relative; z-index:1}
+.term .d{color:rgba(255,255,255,.5)} .term .l{color:var(--lime)} .term .r{color:#ff9d8a}
+.term .cursor{display:inline-block; width:7px; height:14px; background:var(--lime); vertical-align:-2px; animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* tools marquee */
+.strip{border-block:1px solid var(--line); background:var(--surface); overflow:hidden; padding-block:18px}
+.strip-inner{display:flex; gap:14px; width:max-content; animation:slide 40s linear infinite}
+.strip:hover .strip-inner{animation-play-state:paused}
+@keyframes slide{to{transform:translateX(-50%)}}
+.tool{display:inline-flex; align-items:center; gap:8px; font-weight:600; font-size:15px; color:var(--ink); white-space:nowrap; padding:0 10px}
+.tool::before{content:"◆"; color:var(--sage); font-size:10px}
+
+/* sections */
+section{padding-block:96px 0}
+.sec-top{display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap; margin-bottom:40px}
+.kicker{font-size:13px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--sage); margin:0 0 10px}
+h2.big{font-family:var(--display); font-weight:800; font-size:clamp(34px,4.6vw,52px); line-height:1.05; letter-spacing:-.03em; margin:0; max-width:18ch; text-wrap:balance}
+.sec-top p{max-width:44ch; color:var(--muted); margin:0}
+
+/* expertise */
+.exp-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
+@media (max-width:1040px){.exp-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.exp-grid{grid-template-columns:1fr}}
+.xcard{background:var(--surface); border:1px solid var(--line); border-radius:20px; padding:26px; display:flex; flex-direction:column; gap:14px; transition:transform .2s, border-color .2s, box-shadow .2s}
+.xcard:hover{transform:translateY(-4px); border-color:var(--sage); box-shadow:0 18px 40px -24px rgba(18,62,52,.45)}
+.xhead{display:flex; justify-content:space-between; align-items:center}
+.num{font-family:var(--mono); font-size:13px; color:var(--muted)}
+.sym{width:44px; height:44px; border-radius:12px; background:color-mix(in srgb,var(--lime) 45%,var(--surface)); color:var(--green); display:grid; place-items:center; font-size:20px; font-weight:700}
+.xcard h3{font-family:var(--display); font-size:20px; line-height:1.25; margin:0}
+.xcard p{margin:0; color:var(--muted); font-size:14.5px}
+.tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:auto}
+.tag{font-size:12.5px; font-weight:500; padding:5px 10px; border-radius:999px; background:var(--paper); border:1px solid var(--line); white-space:nowrap}
+
+/* work */
+.feature{background:var(--green); color:var(--on-green); border-radius:28px; padding:44px; display:grid; grid-template-columns:1.3fr 1fr; gap:40px; align-items:center; position:relative; overflow:hidden}
+.feature::before{content:""; position:absolute; inset:auto -120px -160px auto; width:420px; height:420px; border-radius:50%; background:radial-gradient(circle, rgba(200,240,124,.22), transparent 65%)}
+@media (max-width:860px){.feature{grid-template-columns:1fr; padding:30px}}
+.feature h3{font-family:var(--display); font-weight:800; font-size:clamp(26px,3vw,34px); line-height:1.15; letter-spacing:-.02em; margin:10px 0 14px; text-wrap:balance}
+.feature p{color:var(--on-green-muted); margin:0 0 18px; max-width:52ch}
+.feature .tag{background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.18); color:var(--on-green)}
+.bigmetric{position:relative; z-index:1; background:rgba(0,0,0,.2); border-radius:22px; padding:28px}
+.bigmetric b{display:block; font-family:var(--display); font-weight:800; font-size:clamp(72px,10vw,118px); line-height:.9; letter-spacing:-.05em; color:var(--lime)}
+.bigmetric span{display:block; margin-top:10px; font-size:15px; color:var(--on-green-muted)}
+.bars{margin-top:20px; display:grid; gap:10px; font-family:var(--mono); font-size:12px}
+.bar{display:grid; grid-template-columns:62px 1fr 52px; gap:10px; align-items:center}
+.bar div{height:10px; border-radius:6px; background:rgba(255,255,255,.12); overflow:hidden}
+.bar div i{display:block; height:100%; border-radius:6px; background:#ff9d8a}
+.bar.after div i{background:var(--lime); width:26.7%}
+.bar.before div i{width:100%}
+
+.cases{display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-top:16px}
+@media (max-width:860px){.cases{grid-template-columns:1fr}}
+.case{background:var(--surface); border:1px solid var(--line); border-radius:22px; padding:28px; display:flex; flex-direction:column; gap:16px; transition:transform .2s, box-shadow .2s}
+.case:hover{transform:translateY(-4px); box-shadow:0 18px 40px -26px rgba(18,62,52,.5)}
+.case-top{display:flex; justify-content:space-between; align-items:flex-start; gap:16px}
+.case h3{font-family:var(--display); font-size:21px; line-height:1.25; margin:6px 0 0; text-wrap:balance}
+.where{font-size:13px; color:var(--muted); font-weight:500}
+.pill{flex:none; text-align:right}
+.pill b{display:block; font-family:var(--display); font-weight:800; font-size:34px; line-height:1; letter-spacing:-.03em; color:var(--green)}
+:root[data-theme="dark"] .pill b{color:var(--lime)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pill b{color:var(--lime)}}
+.pill span{font-size:12px; color:var(--muted)}
+.blocks{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+@media (max-width:560px){.blocks{grid-template-columns:1fr}}
+.blk{background:var(--paper); border-radius:14px; padding:14px}
+.blk h4{margin:0 0 4px; font-size:11.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--sage)}
+.blk p{margin:0; font-size:14px}
+
+/* architecture */
+.arch{background:var(--surface); border:1px solid var(--line); border-radius:24px; padding:30px; display:grid; grid-template-columns:.8fr 1.2fr; gap:36px; align-items:center}
+@media (max-width:860px){.arch{grid-template-columns:1fr; padding:22px}}
+.arch h3{font-family:var(--display); font-size:26px; line-height:1.2; margin:8px 0 12px}
+.arch p{color:var(--muted); margin:0}
+.stack{display:grid; gap:0}
+.edge{font-family:var(--mono); font-size:12.5px; color:var(--muted); padding:0 0 12px}
+.edge b{color:var(--ink); font-weight:500}
+.tier{border-radius:16px; padding:14px 16px; display:grid; grid-template-columns:130px 1fr; gap:14px; align-items:center}
+.tier.w{background:color-mix(in srgb,var(--lime) 35%,var(--surface))}
+.tier.a{background:color-mix(in srgb,var(--sage) 22%,var(--surface))}
+.tier.d{background:var(--green); color:var(--on-green)}
+.tier h4{margin:0; font-family:var(--display); font-size:16px}
+.tier h4 small{display:block; font-family:var(--body); font-weight:500; font-size:12px; opacity:.75}
+.tier .tags .tag{background:rgba(255,255,255,.55); border-color:transparent; color:#10251f}
+.tier.d .tags .tag{background:rgba(255,255,255,.12); color:var(--on-green)}
+.flow{height:22px; display:flex; justify-content:center}
+.flow::before{content:""; width:2px; background:repeating-linear-gradient(var(--sage) 0 5px,transparent 5px 10px); background-size:2px 10px; animation:flow .8s linear infinite}
+@keyframes flow{to{background-position:0 10px}}
+@media (max-width:520px){.tier{grid-template-columns:1fr; gap:8px}}
+
+/* experience */
+.timeline{position:relative; display:grid; gap:18px}
+.job{display:grid; grid-template-columns:220px 1fr; gap:32px; background:var(--surface); border:1px solid var(--line); border-radius:22px; padding:30px}
+@media (max-width:820px){.job{grid-template-columns:1fr; gap:14px; padding:24px}}
+.job-when{display:flex; flex-direction:column; gap:6px}
+.dates{font-family:var(--mono); font-size:13px; color:var(--muted)}
+.now{align-self:flex-start; font-size:12px; font-weight:600; background:var(--lime); color:#10251f; padding:4px 10px; border-radius:999px}
+.job h3{font-family:var(--display); font-size:26px; margin:0; letter-spacing:-.02em}
+.job .role{font-weight:600; margin:0 0 12px; color:var(--sage)}
+.job .proj{color:var(--muted); margin:0 0 14px}
+.job ul{margin:0 0 18px; padding:0; list-style:none; display:grid; gap:10px}
+.job li{position:relative; padding-left:26px}
+.job li::before{content:""; position:absolute; left:4px; top:9px; width:8px; height:8px; border-radius:3px; background:var(--sage)}
+.job li b{font-weight:700}
+.job > div{min-width:0}
+
+/* credentials */
+.creds{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+@media (max-width:900px){.creds{grid-template-columns:1fr}}
+.cred{background:var(--surface); border:1px solid var(--line); border-radius:22px; padding:26px; display:flex; flex-direction:column; gap:10px}
+.cred .num{margin-bottom:4px}
+.cred h3{font-family:var(--display); font-size:20px; margin:0; line-height:1.25}
+.cred p{margin:0; color:var(--muted); font-size:14.5px}
+.cred.hl{background:var(--green); color:var(--on-green); border-color:var(--green)}
+.cred.hl p{color:var(--on-green-muted)}
+.cred.hl .num{color:var(--lime)}
+.badge{width:56px; height:56px; border-radius:14px; background:var(--lime); color:#10251f; display:grid; place-items:center; font-family:var(--display); font-weight:800; font-size:15px}
+
+/* contact */
+.contact{margin-top:96px; background:var(--green); color:var(--on-green); border-radius:32px; padding:64px 48px; position:relative; overflow:hidden}
+.contact::before{content:""; position:absolute; left:-100px; bottom:-200px; width:520px; height:520px; border-radius:50%; background:radial-gradient(circle, rgba(200,240,124,.2), transparent 65%)}
+@media (max-width:700px){.contact{padding:40px 24px; border-radius:24px}}
+.contact-in{position:relative; z-index:1; display:grid; grid-template-columns:1.3fr 1fr; gap:40px; align-items:end}
+@media (max-width:860px){.contact-in{grid-template-columns:1fr}}
+.contact h2{font-family:var(--display); font-weight:800; font-size:clamp(38px,5.6vw,68px); line-height:1; letter-spacing:-.04em; margin:12px 0 18px; text-wrap:balance}
+.contact h2 em{font-style:normal; color:var(--lime)}
+.contact p{color:var(--on-green-muted); margin:0; max-width:46ch}
+.crows{display:grid; gap:10px}
+.crow{display:flex; align-items:center; justify-content:space-between; gap:12px; background:rgba(0,0,0,.2); border-radius:16px; padding:16px 18px; min-width:0}
+.crow span{min-width:0; overflow-wrap:anywhere; font-weight:600}
+.crow small{display:block; font-size:11.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--lime); margin-bottom:2px}
+.crow a{text-decoration:none}
+.copy{flex:none; font:600 13px/1 var(--body); padding:10px 14px; border-radius:999px; border:0; background:var(--lime); color:#10251f; cursor:pointer}
+.contact .cta{margin-top:26px}
+
+footer{padding-block:36px 44px; font-size:14px; color:var(--muted)}
+footer .wrap{display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px}
+footer nav{display:flex; gap:20px}
+footer a{text-decoration:none}
+footer a:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="mono">NC</span>Nagaraju Chattu</a>
+    <nav class="links" aria-label="Sections">
+      <a href="#expertise">Expertise</a>
+      <a href="#work">Selected work</a>
+      <a href="#experience">Experience</a>
+      <a href="#credentials">Credentials</a>
+    </nav>
+    <a class="btn solid sm" href="#contact">Let's connect</a>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap hero" id="top">
+    <div class="hero-grid">
+      <div>
+        <span class="avail"><i></i>St. Louis, Missouri · Open to opportunities</span>
+        <h1>Reliable platforms. <em>Faster releases.</em></h1>
+        <p class="intro">I'm an <b>AWS DevOps Engineer</b> and AWS Certified Solutions Architect with 4 years of experience running customer-facing applications on AWS. I build three-tier platforms on <b>EKS with Terraform</b>, ship them through <b>GitOps pipelines with security gates</b>, and keep them up with SLOs, including Best Buy checkout traffic on Black Friday.</p>
+        <div class="cta">
+          <a class="btn solid" href="#contact">Contact me ↓</a>
+          <a class="btn" href="#work">See selected work ↓</a>
+          <a class="btn" href="https://github.com/nagarajuchattu26" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+        <div class="stats">
+          <div class="stat"><b>4+</b><span>years in DevOps</span></div>
+          <div class="stat"><b>30+</b><span>microservices run</span></div>
+          <div class="stat"><b>99.95%</b><span>checkout availability</span></div>
+        </div>
+      </div>
+
+      <aside class="focus" aria-label="Current focus">
+        <div class="focus-top">
+          <div class="avatar">NC</div>
+          <div><h2>AWS DevOps Engineer</h2><p>Best Buy · Remote</p></div>
+        </div>
+        <div class="label">Currently focused on</div>
+        <ul>
+          <li>Three-tier e-commerce platform on Amazon EKS</li>
+          <li>Terraform module standards across 4 product teams</li>
+          <li>Argo CD GitOps with SonarQube, Trivy and Checkov gates</li>
+          <li>SLO-based alerting and Black Friday readiness</li>
+        </ul>
+        <div class="term" aria-label="Deployment pipeline summary"><span class="d">$ terraform plan</span><br>~ deploy_time &nbsp;&nbsp;<span class="r">45m</span> → <span class="l">12m</span><br>~ env_build &nbsp;&nbsp;&nbsp;&nbsp;<span class="r">2w</span> → <span class="l">&lt;1d</span><br>~ eks_spend &nbsp;&nbsp;&nbsp;&nbsp;<span class="l">-25%</span><br><span class="l">Apply complete.</span> <span class="cursor"></span></div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="strip" aria-label="Tools I work with">
+    <div class="strip-inner">
+      <span class="tool">Amazon EKS</span><span class="tool">Terraform</span><span class="tool">Argo CD</span><span class="tool">GitHub Actions</span><span class="tool">Jenkins</span><span class="tool">Helm</span><span class="tool">Karpenter</span><span class="tool">Aurora PostgreSQL</span><span class="tool">ElastiCache Redis</span><span class="tool">Datadog</span><span class="tool">Prometheus</span><span class="tool">Grafana</span><span class="tool">SonarQube</span><span class="tool">Trivy</span><span class="tool">Checkov</span><span class="tool">Docker</span><span class="tool">Ansible</span><span class="tool">Python</span><span class="tool">Claude Code</span>
+      <span class="tool" aria-hidden="true">Amazon EKS</span><span class="tool" aria-hidden="true">Terraform</span><span class="tool" aria-hidden="true">Argo CD</span><span class="tool" aria-hidden="true">GitHub Actions</span><span class="tool" aria-hidden="true">Jenkins</span><span class="tool" aria-hidden="true">Helm</span><span class="tool" aria-hidden="true">Karpenter</span><span class="tool" aria-hidden="true">Aurora PostgreSQL</span><span class="tool" aria-hidden="true">ElastiCache Redis</span><span class="tool" aria-hidden="true">Datadog</span><span class="tool" aria-hidden="true">Prometheus</span><span class="tool" aria-hidden="true">Grafana</span><span class="tool" aria-hidden="true">SonarQube</span><span class="tool" aria-hidden="true">Trivy</span><span class="tool" aria-hidden="true">Checkov</span><span class="tool" aria-hidden="true">Docker</span><span class="tool" aria-hidden="true">Ansible</span><span class="tool" aria-hidden="true">Python</span><span class="tool" aria-hidden="true">Claude Code</span>
+    </div>
+  </div>
+
+  <section id="expertise">
+    <div class="wrap">
+      <div class="sec-top">
+        <div><p class="kicker">Core expertise</p><h2 class="big">What I bring to a platform team</h2></div>
+        <p>Four areas I work in every week, from the network layer to the on-call pager.</p>
+      </div>
+      <div class="exp-grid">
+        <article class="xcard">
+          <div class="xhead"><span class="sym">◇</span><span class="num">01</span></div>
+          <h3>AWS cloud infrastructure</h3>
+          <p>Multi-AZ VPCs, ALB, WAF and Route 53, built as reusable Terraform modules with remote state and plan review.</p>
+          <div class="tags"><span class="tag">Terraform</span><span class="tag">VPC</span><span class="tag">IAM</span><span class="tag">CloudFormation</span></div>
+        </article>
+        <article class="xcard">
+          <div class="xhead"><span class="sym">⬡</span><span class="num">02</span></div>
+          <h3>Kubernetes &amp; Amazon EKS</h3>
+          <p>Microservices on EKS with Helm, NGINX Ingress, RBAC and IRSA, autoscaled by HPA and Karpenter on Spot.</p>
+          <div class="tags"><span class="tag">EKS</span><span class="tag">Helm</span><span class="tag">Karpenter</span><span class="tag">IRSA</span></div>
+        </article>
+        <article class="xcard">
+          <div class="xhead"><span class="sym">⌁</span><span class="num">03</span></div>
+          <h3>CI/CD &amp; DevSecOps</h3>
+          <p>GitHub Actions and Jenkins pipelines with SonarQube, Trivy and Checkov gates, deployed by Argo CD GitOps.</p>
+          <div class="tags"><span class="tag">GitHub Actions</span><span class="tag">Jenkins</span><span class="tag">Argo CD</span><span class="tag">Trivy</span></div>
+        </article>
+        <article class="xcard">
+          <div class="xhead"><span class="sym">◎</span><span class="num">04</span></div>
+          <h3>Observability &amp; reliability</h3>
+          <p>Per-tier dashboards, SLOs on critical APIs, incident command, RCAs, and backup and disaster recovery.</p>
+          <div class="tags"><span class="tag">Datadog</span><span class="tag">Prometheus</span><span class="tag">Grafana</span><span class="tag">SLOs</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-top">
+        <div><p class="kicker">Selected work</p><h2 class="big">Problems solved, with numbers</h2></div>
+        <p>Every result here comes from production systems I owned or co-owned.</p>
+      </div>
+
+      <article class="feature">
+        <div style="position:relative; z-index:1">
+          <span class="label">Featured · Best Buy</span>
+          <h3>One CI/CD flow with security gates and GitOps deploys</h3>
+          <p>Release pipelines were split across tools and slow to finish. I rebuilt them into one GitHub Actions and Jenkins flow with SonarQube, Trivy and Checkov gates, then moved deployments to Argo CD syncing per-environment Helm charts.</p>
+          <div class="tags"><span class="tag">GitHub Actions</span><span class="tag">Jenkins</span><span class="tag">Argo CD</span><span class="tag">Helm</span><span class="tag">SonarQube</span><span class="tag">Trivy</span><span class="tag">Checkov</span></div>
+        </div>
+        <div class="bigmetric">
+          <b>73%</b>
+          <span>faster deployments, from 45 minutes down to 12</span>
+          <div class="bars" aria-hidden="true">
+            <div class="bar before"><span>before</span><div><i></i></div><span>45 min</span></div>
+            <div class="bar after"><span>after</span><div><i></i></div><span>12 min</span></div>
+          </div>
+        </div>
+      </article>
+
+      <div class="cases">
+        <article class="case">
+          <div class="case-top"><div><span class="num">01</span> <span class="where">· Best Buy</span><h3>Black Friday-ready checkout platform</h3></div><div class="pill"><b>99.95%</b><span>availability</span></div></div>
+          <div class="blocks">
+            <div class="blk"><h4>Challenge</h4><p>Holiday traffic spikes across 30+ storefront, cart and checkout services.</p></div>
+            <div class="blk"><h4>What I did</h4><p>Tuned HPA and Karpenter, Aurora read replicas and Redis caching before each sale.</p></div>
+            <div class="blk"><h4>Result</h4><p>Checkout stayed up through Black Friday peaks.</p></div>
+          </div>
+          <div class="tags"><span class="tag">EKS</span><span class="tag">Karpenter</span><span class="tag">Aurora</span><span class="tag">Redis</span></div>
+        </article>
+        <article class="case">
+          <div class="case-top"><div><span class="num">02</span> <span class="where">· Best Buy</span><h3>Terraform module library</h3></div><div class="pill"><b>&lt;1 day</b><span>per new environment</span></div></div>
+          <div class="blocks">
+            <div class="blk"><h4>Challenge</h4><p>New environments took about two weeks to stand up.</p></div>
+            <div class="blk"><h4>What I did</h4><p>Wrote reusable modules for VPC, EKS, ALB, Aurora and ElastiCache, plus a plan-review standard.</p></div>
+            <div class="blk"><h4>Result</h4><p>Adopted by 4 product teams.</p></div>
+          </div>
+          <div class="tags"><span class="tag">Terraform</span><span class="tag">Remote state</span><span class="tag">Multi-AZ</span></div>
+        </article>
+        <article class="case">
+          <div class="case-top"><div><span class="num">03</span> <span class="where">· Best Buy</span><h3>EKS cost optimization</h3></div><div class="pill"><b>−25%</b><span>compute spend</span></div></div>
+          <div class="blocks">
+            <div class="blk"><h4>Challenge</h4><p>Over-provisioned pods running on on-demand nodes.</p></div>
+            <div class="blk"><h4>What I did</h4><p>Moved stateless services to Spot via Karpenter and right-sized requests from Grafana data.</p></div>
+            <div class="blk"><h4>Result</h4><p>Savings tracked monthly in Cost Explorer.</p></div>
+          </div>
+          <div class="tags"><span class="tag">Karpenter</span><span class="tag">Spot</span><span class="tag">FinOps</span></div>
+        </article>
+        <article class="case">
+          <div class="case-top"><div><span class="num">04</span> <span class="where">· Best Buy</span><h3>SLO-based alerting</h3></div><div class="pill"><b>−60%</b><span>noisy pages</span></div></div>
+          <div class="blocks">
+            <div class="blk"><h4>Challenge</h4><p>On-call was paged for alerts nobody could act on.</p></div>
+            <div class="blk"><h4>What I did</h4><p>Built per-tier dashboards and SLOs on checkout and order APIs.</p></div>
+            <div class="blk"><h4>Result</h4><p>Alerts fire only when customer orders are at risk.</p></div>
+          </div>
+          <div class="tags"><span class="tag">Datadog</span><span class="tag">Prometheus</span><span class="tag">Grafana</span></div>
+        </article>
+        <article class="case">
+          <div class="case-top"><div><span class="num">05</span> <span class="where">· Citi Bank</span><h3>VM-to-Kubernetes migration</h3></div><div class="pill"><b>8</b><span>services migrated</span></div></div>
+          <div class="blocks">
+            <div class="blk"><h4>Challenge</h4><p>Application-tier Java services were running on VMs.</p></div>
+            <div class="blk"><h4>What I did</h4><p>Wrote the Dockerfiles and manifests, and owned scaling and restarts.</p></div>
+            <div class="blk"><h4>Result</h4><p>Web and Oracle tiers stayed in place without disruption.</p></div>
+          </div>
+          <div class="tags"><span class="tag">Docker</span><span class="tag">Kubernetes</span><span class="tag">Spring Boot</span></div>
+        </article>
+        <article class="case">
+          <div class="case-top"><div><span class="num">06</span> <span class="where">· Netmetric</span><h3>Server setup automation</h3></div><div class="pill"><b>&lt;1 hr</b><span>per new server</span></div></div>
+          <div class="blocks">
+            <div class="blk"><h4>Challenge</h4><p>Setting up a new server took most of a day.</p></div>
+            <div class="blk"><h4>What I did</h4><p>Wrote Ansible playbooks for the Nginx, Apache and Tomcat tiers.</p></div>
+            <div class="blk"><h4>Result</h4><p>Repeatable builds for 5+ client applications.</p></div>
+          </div>
+          <div class="tags"><span class="tag">Ansible</span><span class="tag">CloudFormation</span><span class="tag">RHEL</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="platform">
+    <div class="wrap">
+      <div class="arch">
+        <div>
+          <p class="kicker">Architecture</p>
+          <h3>How the platform fits together</h3>
+          <p>Best Buy's catalog, cart, checkout, store pickup and order tracking run on a three-tier AWS design, built in Terraform across 3 Availability Zones per environment. Security groups chain tier to tier, and IRSA lets only the app tier reach Aurora and Redis.</p>
+        </div>
+        <div class="stack">
+          <div class="edge"><b>Customer</b> → Route 53 → AWS WAF → ALB + ACM TLS</div>
+          <div class="tier w"><h4>Web tier<small>public edge</small></h4><div class="tags"><span class="tag">NGINX Ingress</span><span class="tag">React storefront</span></div></div>
+          <div class="flow"></div>
+          <div class="tier a"><h4>App tier<small>private subnets</small></h4><div class="tags"><span class="tag">Spring Boot</span><span class="tag">catalog · cart · checkout · orders</span><span class="tag">HPA + Karpenter</span></div></div>
+          <div class="flow"></div>
+          <div class="tier d"><h4>Data tier<small>multi-AZ</small></h4><div class="tags"><span class="tag">Aurora PostgreSQL</span><span class="tag">ElastiCache Redis</span><span class="tag">S3</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <div class="sec-top">
+        <div><p class="kicker">Experience</p><h2 class="big">Where I've done the work</h2></div>
+      </div>
+      <div class="timeline">
+        <article class="job">
+          <div class="job-when"><span class="dates">Feb 2025 – Present</span><span class="dates">Remote</span><span class="now">Current role</span></div>
+          <div>
+            <h3>Best Buy</h3>
+            <p class="role">AWS DevOps Engineer</p>
+            <p class="proj">Three-tier AWS platform for e-commerce services, built to stay stable through Black Friday and holiday peaks.</p>
+            <ul>
+              <li>Built the three-tier network in Terraform across <b>3 Availability Zones</b> with least-privilege IAM, RBAC and IRSA.</li>
+              <li>Reusable Terraform modules cut new environment builds from <b>~2 weeks to under 1 day</b>, adopted by 4 teams.</li>
+              <li>Unified CI/CD with security gates and Argo CD GitOps: deployments went from <b>45 to 12 minutes</b>.</li>
+              <li>Kept <b>99.95% checkout availability</b> through Black Friday across 30+ microservices.</li>
+              <li>Cut EKS compute spend <b>~25%</b> and non-actionable pages <b>~60%</b>.</li>
+              <li>Escalation lead on EKS and Aurora incidents; write RCAs and onboarded 2 engineers to on-call.</li>
+            </ul>
+            <div class="tags"><span class="tag">EKS</span><span class="tag">Terraform</span><span class="tag">Argo CD</span><span class="tag">Karpenter</span><span class="tag">Aurora</span><span class="tag">Datadog</span></div>
+          </div>
+        </article>
+        <article class="job">
+          <div class="job-when"><span class="dates">Nov 2021 – Jan 2024</span><span class="dates">Hybrid</span></div>
+          <div>
+            <h3>Citi Bank</h3>
+            <p class="role">DevOps Engineer (Build and Release)</p>
+            <p class="proj">Build, release and VM-to-Kubernetes migration for three-tier enterprise Java banking applications.</p>
+            <ul>
+              <li>Owned build and release for <b>20+ enterprise Java apps</b> through DEV, SIT, UAT and PROD with UrbanCode Deploy.</li>
+              <li>Raised every production change in ServiceNow with back-out and database rollback plans.</li>
+              <li>Jenkins pipelines on Groovy shared libraries took the nightly build to <b>consistently green</b>.</li>
+              <li>Migrated <b>8 services</b> from VMs to Kubernetes.</li>
+            </ul>
+            <div class="tags"><span class="tag">Jenkins</span><span class="tag">UrbanCode</span><span class="tag">ServiceNow</span><span class="tag">Splunk</span><span class="tag">Kubernetes</span></div>
+          </div>
+        </article>
+        <article class="job">
+          <div class="job-when"><span class="dates">Sep 2020 – Oct 2021</span></div>
+          <div>
+            <h3>Netmetric Solutions</h3>
+            <p class="role">Cloud and DevOps Engineer</p>
+            <ul>
+              <li>Built three-tier AWS environments for <b>5+ client applications</b> with CloudFormation, ELB, Auto Scaling and RDS.</li>
+              <li>Ansible playbooks cut server setup from <b>most of a day to under an hour</b>.</li>
+              <li>Ran Jenkins, Nexus, ELK, Prometheus and Grafana; configured RDS Multi-AZ failover and backups.</li>
+            </ul>
+            <div class="tags"><span class="tag">CloudFormation</span><span class="tag">Ansible</span><span class="tag">RDS</span><span class="tag">ELK</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="credentials">
+    <div class="wrap">
+      <div class="sec-top">
+        <div><p class="kicker">Credentials</p><h2 class="big">Certification &amp; education</h2></div>
+      </div>
+      <div class="creds">
+        <article class="cred hl">
+          <div class="badge">AWS</div>
+          <span class="num">01 · Certification</span>
+          <h3>AWS Certified Solutions Architect – Associate</h3>
+          <p>SAA-C03 · Amazon Web Services</p>
+        </article>
+        <article class="cred">
+          <div class="badge">M.S.</div>
+          <span class="num">02 · Education</span>
+          <h3>Master of Science, Information Systems</h3>
+          <p>Saint Louis University · Jan 2024 – Dec 2025</p>
+        </article>
+        <article class="cred">
+          <div class="badge">AI</div>
+          <span class="num">03 · Daily toolkit</span>
+          <h3>AI-assisted engineering</h3>
+          <p>Claude Code, GitHub Copilot, Cursor and Amazon Bedrock for Terraform, Helm and pipeline work, with every change peer-reviewed.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <section class="contact" id="contact">
+      <div class="contact-in">
+        <div>
+          <span class="label">Contact</span>
+          <h2>Let's build something <em>reliable.</em></h2>
+          <p>I'm open to AWS DevOps, platform engineering and SRE roles, remote or in St. Louis. Email is the fastest way to reach me.</p>
+          <div class="cta">
+            <a class="btn lime" href="mailto:nagarajuchattu12@gmail.com?subject=Opportunity%20for%20Nagaraju%20Chattu">Email me ↗</a>
+            <a class="btn ghost-light" href="https://github.com/nagarajuchattu26" target="_blank" rel="noopener">GitHub ↗</a>
+          </div>
+        </div>
+        <div class="crows">
+          <div class="crow"><span><small>Email</small><span id="email-text">nagarajuchattu12@gmail.com</span></span><button class="copy" id="copy-email" type="button">Copy email</button></div>
+          <div class="crow"><span><small>GitHub</small><a href="https://github.com/nagarajuchattu26" target="_blank" rel="noopener">github.com/nagarajuchattu26</a></span></div>
+          <div class="crow"><span><small>Location</small>St. Louis, Missouri · Open to remote</span></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Nagaraju Chattu · AWS DevOps Engineer</span>
+    <nav aria-label="Footer"><a href="https://github.com/nagarajuchattu26" target="_blank" rel="noopener">GitHub</a><a href="#contact">Email</a><a href="#top">Back to top ↑</a></nav>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var btn = document.getElementById('copy-email');
+  var span = document.getElementById('email-text');
+  btn.addEventListener('click', function(){
+    var done = function(){ btn.textContent = 'Copied ✓'; setTimeout(function(){ btn.textContent = 'Copy email'; }, 1800); };
+    var fallback = function(){ var r = document.createRange(); r.selectNodeContents(span); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Press Ctrl+C'; };
+    try { navigator.clipboard.writeText(span.textContent).then(done, fallback); } catch(e){ fallback(); }
+  });
+})();
+</script>
+</body>
+</html>
